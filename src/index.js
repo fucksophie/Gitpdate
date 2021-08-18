@@ -17,7 +17,6 @@ app.post("/", (req, res) => {
 		const location = config.repoToLocation.find(e => e.repo == req.body.repository.full_name);
 
 		if(location) {
-			
 			shell.cd(location.location)
 
 			if(fs.existsSync(location.location)) {
@@ -27,7 +26,9 @@ app.post("/", (req, res) => {
 				console.log("/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
 				shell.exec(`git clone https://github.com/${location.repo} .`, true)
 			}
+
 			res.send("Yay.").status(200);
+			
 			setTimeout(() => {
 				shell.exec(location.command, true)
 			}, 2000)
