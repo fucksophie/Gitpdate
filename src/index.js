@@ -17,12 +17,15 @@ app.post("/", (req, res) => {
 		const location = config.repoToLocation.find(e => e.repo == req.body.repository.full_name);
 
 		if(location) {
+			
+			shell.cd(location.location)
+
 			if(fs.existsSync(location.location)) {
-				shell.exec(`git pull ${location.location}`, true)				
+				shell.exec(`git pull`, true)				
 				console.log("(((: Updating " + location.repo + " at " + new Date().toLocaleTimeString())
 			} else {
 				console.log("/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
-				shell.exec(`git clone https://github.com/${location.repo} ${location.location}`, true)
+				shell.exec(`git clone https://github.com/${location.repo} .`, true)
 			}
 			res.send("Yay.").status(200);
 			setTimeout(() => {
