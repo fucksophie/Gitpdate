@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-	res.send("Git(u)pdate is running! Enjoy your repos being synced!")
+	res.send("Gitpdate is running! Enjoy your repos being synced!")
 })
 
 app.post("/", (req, res) => {
@@ -24,18 +24,18 @@ app.post("/", (req, res) => {
 				console.log("/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
 				shell.exec(`git clone https://github.com/${location.repo} ${location.location}`, true)
 			}
-			
+			res.send("Yay.").status(200);
 			setTimeout(() => {
 				shell.exec(location.command, true)
 			}, 2000)
 		} else {
-			console.log("): Update sent from " + req.body.repository.full_name + " but couldn't find config.") 
+			console.log("): Update sent from " + req.body.repository.full_name + " but couldn't find config.")
+			res.send("Error.").status(404); 
 		}
 	} else {
 		console.log("): Receieved weird POST.")
+		res.send("Error.").status(500);
 	}
-
-	res.send(req.body)
 })
 
 app.listen(20009, () => {
