@@ -24,7 +24,10 @@ app.post("/", (req, res) => {
 				console.log("/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
 				shell.exec(`git clone https://github.com/${location.repo} ${location.location}`, true)
 			}
-			shell.exec(location.command, true)
+			
+			setTimeout(() => {
+				shell.exec(location.command, true)
+			}, 2000)
 		} else {
 			console.log("): Update sent from " + req.body.repository.full_name + " but couldn't find config.") 
 		}
