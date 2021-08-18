@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-	res.send("Gitpdate OK")
+	res.send("Git(u)pdate is running! Enjoy your repos being synced!")
 })
 
 app.post("/", (req, res) => {
