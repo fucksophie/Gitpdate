@@ -1,0 +1,21 @@
+{
+  "name": "gitpdate",
+  "version": "1.0.0",
+  "description": "Gitupdate",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "type": "module",
+  "keywords": [
+    "hi",
+    "this",
+    "is",
+    "cool"
+  ],
+  "author": "yourfriend",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
