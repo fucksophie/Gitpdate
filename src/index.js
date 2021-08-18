@@ -4,7 +4,7 @@ import crypto from "crypto"
 import { Webhook } from "webhook-discord";
 import shell from "shelljs"
 
-let config = {};
+let config = JSON.parse(fs.readFileSync("config.json").toString());
 
 const app = express();
 const Hook = new Webhook(config.webhook)
@@ -61,14 +61,6 @@ app.post("/", (req, res) => {
 })
 
 app.listen(20009, () => {
-	if(!fs.existsSync("config.json")) {
-		console.log(":/ Couldn't find config.json. Exiting.")
-		Hook.err("Couldn't find config.json")
-		process.exit(1);
-	} else {
-		config = JSON.parse(fs.readFileSync("config.json").toString());
-	}
-
 	if (!shell.which('git')) {
 		console.log("): Couldn't find git.")
 		Hook.err("Couldn't find git.")
