@@ -1,12 +1,13 @@
 import express from "express"
 import fs from "fs";
 import crypto from "crypto"
-
+import { Webhook } from "webhook-discord";
 import shell from "shelljs"
 
 let config = {};
 
 const app = express();
+const Hook = new Webhook(config.webhook)
 
 app.use(express.json());
 
@@ -34,18 +35,23 @@ app.post("/", (req, res) => {
 			if(fs.existsSync(location.location)) {
 				shell.exec(`git pull`, true)				
 				console.log("(((: Updating " + location.repo + " at " + new Date().toLocaleTimeString())
+
+				Hook.success("(((: Updating " + location.repo + " at " + new Date().toLocaleTimeString())
 			} else {
 				console.log("/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
+				
+				Hook.warn("/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
 				shell.exec(`git clone https://github.com/${location.repo} .`, true)
 			}
 
 			res.send("Yay.").status(200);
-			
+			Hook.success("Pulled " + location.repo + "!")
 			setTimeout(() => {
 				shell.exec(location.command, true)
 			}, 2000)
 		} else {
 			console.log("): Update sent from " + req.body.repository.full_name + " but couldn't find config.")
+			Hook.err("Update sent from " + req.body.repository.full_name + " but couldn't find config.")
 			res.send("Error.").status(404); 
 		}
 	} else {
@@ -57,6 +63,7 @@ app.post("/", (req, res) => {
 app.listen(20009, () => {
 	if(!fs.existsSync("config.json")) {
 		console.log(":/ Couldn't find config.json. Exiting.")
+		Hook.err("Couldn't find config.json")
 		process.exit(1);
 	} else {
 		config = JSON.parse(fs.readFileSync("config.json").toString());
@@ -64,7 +71,10 @@ app.listen(20009, () => {
 
 	if (!shell.which('git')) {
 		console.log("): Couldn't find git.")
+		Hook.err("Couldn't find git.")
 		process.exit(1)
 	}
+
+	Hook.success("Gitupdate running.")
 	console.log(":) Gitpdate running on port 20009.")
 })
