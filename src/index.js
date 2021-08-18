@@ -36,16 +36,16 @@ app.post("/", (req, res) => {
 				shell.exec(`git pull`, true)				
 				console.log("(((: Updating " + location.repo + " at " + new Date().toLocaleTimeString())
 
-				Hook.success("Gitpdate", "(((: Updating " + location.repo + " at " + new Date().toLocaleTimeString())
+				Hook.success("Gitpdate", "Updating " + location.repo + " at " + new Date().toLocaleTimeString())
 			} else {
 				console.log("/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
 				
-				Hook.warn("Gitpdate", "/: Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
+				Hook.warn("Gitpdate", "Couldn't find " + location.repo + " at " + location.location + ". Attempting to clone it.")
 				shell.exec(`git clone https://github.com/${location.repo} .`, true)
 			}
 
 			res.send("Yay.").status(200);
-			Hook.success("Gitpdate", "Pulled " + location.repo + "!")
+
 			setTimeout(() => {
 				shell.exec(location.command, true)
 			}, 2000)
