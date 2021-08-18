@@ -1,0 +1,9 @@
+{
+	"repoToLocation": [
+		{
+			"location": "~/bADUSSYGENERAY", 
+			"repo": "sexyboty/hihowareyou",
+			"command": "systemctl restart badussy-service"
+		}
+	]
+}
