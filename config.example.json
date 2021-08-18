@@ -1,4 +1,6 @@
 {
+	"secret": "HI HELLO",
+	"webhook": "DISCORDHOOK",
 	"repoToLocation": [
 		{
 			"location": "/home/hi/BadussyGaming", 

@@ -1,5 +1,7 @@
 import express from "express"
 import fs from "fs";
+import crypto from "crypto"
+
 import shell from "shelljs"
 
 let config = {};
@@ -13,6 +15,16 @@ app.get("/", (req, res) => {
 })
 
 app.post("/", (req, res) => {
+	const sig = req.get("X-Hub-Signature-256") || "";
+	const hmac = crypto.createHmac('sha256', config.secret);
+	const digest = Buffer.from("sha256=" + hmac.update(JSON.stringify(req.body)).digest("hex"), "utf8")
+	
+	const checksum = Buffer.from(sig, 'utf8')
+
+	if(checksum.length !== digest.length || !crypto.timingSafeEqual(digest, checksum)) {
+		return res.send("Failed authenication.").status(401);
+	}
+
 	if(req?.body?.repository?.full_name) {
 		const location = config.repoToLocation.find(e => e.repo == req.body.repository.full_name);
 

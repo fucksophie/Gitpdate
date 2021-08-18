@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "webhook-discord": "^3.7.8"
   }
 }
