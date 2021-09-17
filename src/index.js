@@ -33,7 +33,9 @@ app.post("/", (req, res) => {
 			shell.cd(location.location)
 
 			if(fs.existsSync(location.location)) {
-				shell.exec(`git pull`, true)				
+				shell.exec(`git fetch --all`, true)	
+				shell.exec(`git reset --hard origin/${req.body.repository.default_branch}`, true)
+				
 				console.log("(((: Updating " + location.repo + " at " + new Date().toLocaleTimeString())
 
 				Hook.success("Gitpdate", "Updating " + location.repo + " at " + new Date().toLocaleTimeString())
